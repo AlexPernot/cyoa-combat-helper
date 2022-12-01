@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <title>La Forêt de la Malédiction</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="description" content=""/>
+  <style>
+    body {
+      height: 100vh;
+      font-family: Lato, Helvetica, Arial, sans-serif;
+      background: no-repeat center/cover url("./xddtree.jpg");
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 1rem 3rem;
+    }
+
+    form > div {
+      text-align: center
+    }
+
+    .form-row {
+      display: flex;
+    }
+
+    label input {
+      margin: 1rem 1rem;
+      width: 4rem
+    }
+
+    .roll {
+      font-weight: bold;
+    }
+
+    .player-text {
+      font-weight: bold;
+      color: green;
+    }
+
+    .enemy-text {
+      font-weight: bold;
+      color: red;
+    }
+
+    .neutral-text {
+      font-weight: bold;
+      color: blue;
+    }
+
+    #result-box {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    #button {
+      font-size: 1.5rem;
+      padding: 0.5em
+    }
+  </style>
+</head>
+<body>
+<form id="form">
+  <div id="player-box">
+    <span class="player-text">VOUS</span>
+    <div class="form-row">
+      <label>Habilité<input type="number" name="player-str"></label>
+      <label>Bonus<input type="number" name="player-bonus"></label>
+    </div>
+    <label class="roll">Jet<input type="number" name="player-roll"></label>
+  </div>
+
+  <div id="enemy-box">
+    <span class="enemy-text">ENNEMI</span>
+    <div class="form-row">
+      <label>Habilité<input type="number" name="enemy-str"></label>
+      <label>Bonus<input type="number" name="enemy-bonus"></label>
+    </div>
+    <label class="roll">Jet<input type="number" name="enemy-roll"></label>
+  </div>
+</form>
+
+<div id="result-box">
+  <button type="button" id="button">Calculer</button>
+  <div id="result"></div>
+</div>
+
+<script type="text/javascript">
+  const getNumericValue = (formData, name) => parseInt(formData.get(name) || "0", 10)
+
+  document.getElementById('button').addEventListener("click", () => {
+    const formData = new FormData(document.getElementById('form'));
+
+    const playerResult = getNumericValue(formData, "player-str")
+      + getNumericValue(formData, "player-bonus")
+      + getNumericValue(formData, "player-roll");
+    const enemyResult = getNumericValue(formData, "enemy-str")
+      + getNumericValue(formData, "enemy-bonus")
+      + getNumericValue(formData, "enemy-roll");
+
+    let resultHTML;
+
+    if (playerResult > enemyResult) {
+      resultHTML = "<p class='player-text'>VOUS TOUCHEZ</p>"
+    } else if (playerResult < enemyResult) {
+      resultHTML = "<p class='enemy-text'>L'ENNEMI TOUCHE</p>"
+    } else {
+      resultHTML = "<p class='neutral-text'>EGALITE, RELANCEZ</p>"
+    }
+
+    document.getElementById('result').innerHTML = `<p>${playerResult} ⚔️ ${enemyResult}</p>${resultHTML}`
+  });
+</script>
+</body>
+</html>
